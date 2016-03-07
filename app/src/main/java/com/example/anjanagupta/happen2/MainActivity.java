@@ -52,15 +52,20 @@ public class MainActivity extends AppCompatActivity {
         editTextUserNameToLogin = (EditText)findViewById(R.id.editTextUserNameToLogin);
         editTextPasswordToLogin = (EditText)findViewById(R.id.editTextPasswordToLogin);
         // get The User name and Password
-        String userName=editTextUserNameToLogin.getText().toString();
-        String password=editTextPasswordToLogin.getText().toString();
+        final String userName=editTextUserNameToLogin.getText().toString();
+        final String password=editTextPasswordToLogin.getText().toString();
         Firebase ref = new Firebase("https://luminous-heat-9678.firebaseio.com/");
         ref.authWithPassword(userName, password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
                 System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
+                editTextUserNameToLogin.setText("");
+                editTextPasswordToLogin.setText("");
                 Toast.makeText(getApplicationContext(), "Successful login", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(MainActivity.this, OptionActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString("mUsername", userName);
+                intent.putExtras(extras);
                 startActivity(intent);
             }
 
