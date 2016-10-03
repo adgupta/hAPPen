@@ -31,7 +31,9 @@ public class ChatActivity extends ListActivity {
     private Firebase mFirebaseRef;
     private ValueEventListener mConnectedListener;
     private ChatListAdapter mChatListAdapter;
-
+    private float lat, lon;
+    private String latString, lonString;
+    public LocationData locationData = LocationData.getLocationData();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,6 @@ public class ChatActivity extends ListActivity {
 
         // Setup our Firebase mFirebaseRef
         mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
-
         // Setup our input methods. Enter key on the keyboard or pushing the send button
         EditText inputText = (EditText) findViewById(R.id.messageInput);
         inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -127,11 +128,17 @@ public class ChatActivity extends ListActivity {
     private void sendMessage() {
         EditText inputText = (EditText) findViewById(R.id.messageInput);
         String input = inputText.getText().toString();
+        //lat = (float) locationData.getLocation().getLatitude();
+       // lon = (float) locationData.getLocation().getLongitude();
+       // latString = String.valueOf(lat);
+       // lonString = String.valueOf(lon);
         if (!input.equals("")) {
             // Create our 'model', a Chat object
+            //sChat chat = new Chat(input, mUsername, latString, lonString);
             Chat chat = new Chat(input, mUsername);
             // Create a new, auto-generated child of that chat location, and save our chat data there
             mFirebaseRef.push().setValue(chat);
+            //mFirebaseRef.child("chat").setValue(chat);
             inputText.setText("");
         }
     }
